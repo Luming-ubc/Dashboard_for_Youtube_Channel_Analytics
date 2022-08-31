@@ -1,0 +1,9 @@
+name: 'api'
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - ipykernel
+  - ipython>=7.15
+  - pandas
+  - requests
