@@ -1,4 +1,4 @@
-# Dashboard_for_Youtube_Channel
+# Dashboard for Youtube Channel Analytics
 1. Access public data of Youtube Channels through API requests. 
 2. Visualize the data on a dashboard
 
