@@ -66,8 +66,11 @@ with open('youtube_api_key_2.txt', 'r') as f:
 # use Videos url
 url = 'https://www.googleapis.com/youtube/v3/videos'
 
-video_id = 'm9d-1QqbCOU'
-params = {'key': API_KEY, 'part': ['statistics', 'localizations', 'contentDetails'], 'id': video_id, 'maxResults': 50}
+# video_id = 'TXOOuYbH6zU' # daoyue she 1st
+video_id = 'OvEXdjpZQpM' # downtown van
+video_id = 'K0pVebp63Tg'
+
+params = {'key': API_KEY, 'part': ['statistics', 'localizations', 'contentDetails', 'recordingDetails'], 'id': video_id, 'maxResults': 2}
 response = requests.get(url, params=params)
 r_dict = response.json()
 
@@ -78,7 +81,40 @@ likeCount = r_dict['items'][0]['statistics']['likeCount']
 favoriteCount = r_dict['items'][0]['statistics']['favoriteCount']
 commentCount = r_dict['items'][0]['statistics']['commentCount']
 duration = r_dict['items'][0]['contentDetails']['duration']
+
 r_dict
+
 # %%
-r_dict['items'][0]['contentDetails']['duration']
+location_description = r_dict['items'][0]['recordingDetails']['locationDescription']
+latitude = r_dict['items'][0]['recordingDetails']['location']['latitude']
+longitude = r_dict['items'][0]['recordingDetails']['location']['longitude']
+
 # %%
+import requests
+
+with open('youtube_api_key_2.txt', 'r') as f:
+        API_KEY = f.read()
+
+# use Videos url
+url = 'https://www.googleapis.com/youtube/v3/commentThreads'
+
+video_id = 'TXOOuYbH6zU'
+params = {'key': API_KEY, 'part': ['id', 'replies', 'snippet'], 'videoId': video_id, 'maxResults': 50}
+response = requests.get(url, params=params)
+r_dict = response.json()
+r_dict
+
+# comment_author_channel_id  = 'UCChfzR-VFarcUlwCNF7pj9Q'
+
+
+# %%
+
+# get relevant information from Video url
+videoId = r_dict['items'][0]['id']
+viewCount = r_dict['items'][0]['statistics']['viewCount']
+likeCount = r_dict['items'][0]['statistics']['likeCount']
+favoriteCount = r_dict['items'][0]['statistics']['favoriteCount']
+commentCount = r_dict['items'][0]['statistics']['commentCount']
+duration = r_dict['items'][0]['contentDetails']['duration']
+r_dict
+
