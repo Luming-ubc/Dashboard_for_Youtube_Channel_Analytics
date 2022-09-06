@@ -59,3 +59,26 @@ channel_summary = get_channel_summary(channel_id)
 channel_summary
 channel_summary.to_csv('data/channel_summary.csv')
 
+# %%
+with open('youtube_api_key_2.txt', 'r') as f:
+        API_KEY = f.read()
+
+# use Videos url
+url = 'https://www.googleapis.com/youtube/v3/videos'
+
+video_id = 'm9d-1QqbCOU'
+params = {'key': API_KEY, 'part': ['statistics', 'localizations', 'contentDetails'], 'id': video_id, 'maxResults': 50}
+response = requests.get(url, params=params)
+r_dict = response.json()
+
+# get relevant information from Video url
+videoId = r_dict['items'][0]['id']
+viewCount = r_dict['items'][0]['statistics']['viewCount']
+likeCount = r_dict['items'][0]['statistics']['likeCount']
+favoriteCount = r_dict['items'][0]['statistics']['favoriteCount']
+commentCount = r_dict['items'][0]['statistics']['commentCount']
+duration = r_dict['items'][0]['contentDetails']['duration']
+r_dict
+# %%
+r_dict['items'][0]['contentDetails']['duration']
+# %%
