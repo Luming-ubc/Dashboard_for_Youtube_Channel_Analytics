@@ -253,9 +253,12 @@ app.layout = html.Div(id = 'main_container', children = [
                             },
                     ),
 
-                    dcc.Graph(
+                    html.Iframe(
                         id='duration', 
-                        style = {'height': '33%'},
+                        style = {
+                            'height': '400px',
+                            'width': '545px'
+                            },
                     ),
                 ],
                 style={
@@ -476,6 +479,45 @@ def plot_violin(year, types):
     ).configure_view(
         stroke=None
     )
+
+    return [plot.to_html()]
+
+
+
+
+@app.callback(
+    [
+        Output(component_id='duration', component_property='srcDoc')
+     ],
+    [
+        Input(component_id='year_dropdown', component_property='value'),
+        Input(component_id='type_selection', component_property='value'),
+    ]
+)
+def plot_duration(year, types):
+
+    if types == 'views':
+        types = 'view_count'
+
+    if types == 'likes':
+        types = 'like_count'
+    
+    if types == 'comments':
+        types = 'comment_count'
+
+
+    plot_df = df[df['year']==year]
+
+    plot = alt.Chart(plot_df).mark_circle(size=60).encode(
+        x='duration(s)',
+        y='view_count',
+        color='location_or_not',
+        size = 'view_count',
+        tooltip=['video_id', 'duration(s)']
+    ).properties(
+        height = 320,
+        width = 300
+    ).interactive()
 
     return [plot.to_html()]
 
