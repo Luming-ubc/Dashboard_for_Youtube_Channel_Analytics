@@ -7,10 +7,11 @@
 ## Solution
 This repository demonstrates how you could grab and visualize the public data of your Youtube channel or any popular Channel through Youtube API requests, and get insights with this Youtube Channel Analytics Dashboard. 
 
-On this prototype Dashboard 1.0, you will find the geographic distributions, time series summary statistics, top items, and more for a pre-defined channel 'Sunday Driver'. You could reveal the view counts, like counts, and comment counts of any individual video by using the interactive tools. 
+On this prototype Dashboard 1.0, you will find the geographic distributions, time series summary statistics, top items, and more for a pre-defined channel ID. For example, I am using ID of this ['Sunday Driver'](https://www.youtube.com/channel/UCqkS7xyIlwNPhbHn_gMlTFw) channel. You could reveal the view counts, like counts, and comment counts of any individual video by using the interactive tools. 
 
 ## Prototype Dashboard 1.0 Demostration
-I can't wait to share this prototype Dashboard 1.0. But, this is an on-going project, and I will keep updating as the project improves.
+:bowtie: I can't wait to share this prototype Dashboard 1.0. But, this is an on-going project, and I will keep updating as the project improves.
+
 ![prototype Dashboard 1.0](https://github.com/Luming-ubc/Dashboard_for_Youtube_Channel_Analytics/blob/main/image/giphy.gif)
 
 ## Future direction
@@ -23,7 +24,7 @@ This Dashboard has the potential of grabing the real time data of any channel of
 4. Connect the data to the Dashboard application.
 
 # Resources
-1. This source file provides basic code for file reading and writing tasks. File format includes text file and image file. [Source code](https://github.com/Luming-ubc/API-requests/blob/main/open_files.py).
-2. This source file provides basic code for API requests (Get, Post, etc.) [Source code](https://github.com/Luming-ubc/API-requests/blob/main/api_request.py)
+1. This source file provides basic code for file reading and writing tasks. File format includes text file and image file. [Source code](https://github.com/Luming-ubc/Dashboard_for_Youtube_Channel_Analytics/blob/main/resources/open_files.py).
+2. This source file provides basic code for API requests (Get, Post, etc.) [Source code](https://github.com/Luming-ubc/Dashboard_for_Youtube_Channel_Analytics/blob/main/resources/api_request.py)
 
 
