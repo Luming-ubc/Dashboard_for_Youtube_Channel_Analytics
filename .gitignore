@@ -2,5 +2,4 @@
 youtube_api_key.txt
 youtube_api_key_2.txt
 data
-*.ipynb
-*.py
+api_youtube.ipynb
