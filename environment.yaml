@@ -7,3 +7,12 @@ dependencies:
   - ipython>=7.15
   - pandas
   - requests
+  - altair
+  - vega_datasets
+  - pip:
+    - isodate
+    - plotly
+    - plotly-express
+    - ipython
+    - dash
+    - dash_bootstrap_components
