@@ -10,6 +10,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import date
+import io
 
 # df = pd.read_csv('data/processed.csv')
 
@@ -213,9 +214,12 @@ app.layout = html.Div(id = 'main_container', children = [
                             },
                     ),
 
-                    dcc.Graph(
+                    html.Iframe(
                         id='time_series', 
-                        style = {'height': '50%'},
+                        style = {
+                            'height': '400px',
+                            'width': '850px'
+                            },
                     ),
                     
 
@@ -328,6 +332,55 @@ def plot_map(year, types):
 
     return [go.Figure(data=fig)]
 
+
+
+
+
+
+df = pd.read_csv('data/processed.csv')
+df['publish_time'] = pd.to_datetime(df['publish_time'])
+
+@app.callback(
+    [
+        Output(component_id='time_series', component_property='srcDoc')
+     ],
+    [
+        Input(component_id='year_dropdown', component_property='value'),
+        Input(component_id='type_selection', component_property='value'),
+    ]
+)
+def plot_bubble(year, types):
+
+    if types == 'views':
+        types = 'view_count'
+
+    if types == 'likes':
+        types = 'like_count'
+    
+    if types == 'comments':
+        types = 'comment_count'
+
+
+    plot_df = df[(df['year']==year)]
+
+    # domain = ['view_count', 'comment_count', 'like_count']
+    # range_= ['lightskyblue', 'red', 'grey']
+    domain_pd = pd.to_datetime(['2019-01-01', '2022-12-31']).astype(int) / 10 ** 6
+
+    plot = alt.Chart(plot_df).mark_circle().encode(
+        alt.Y(types, scale=alt.Scale(type="log")),
+        alt.X('yearmonth(publish_time):T', scale=alt.Scale(domain=list(domain_pd))),
+        size=types,
+        # opacity=types,
+        color = types,
+        # color=alt.Color('variable', scale=alt.Scale(domain=domain))
+    ).properties(
+        height = 320,
+        width = 650
+    )
+
+
+    return [plot.to_html()]
 
 
 
