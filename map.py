@@ -1,5 +1,5 @@
 # %%
-from tkinter import Scale
+# from tkinter import Scale
 import altair as alt
 import pandas as pd
 
@@ -35,10 +35,24 @@ background + points
 # %%
 import plotly.express as px
 
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="view_count", size="view_count",
-                        color_continuous_scale="agsunset",
-                        center={"lat": 52.261, "lon": -123.246}, zoom=3.5,
-                        mapbox_style="carto-positron", hover_name="video_title")
-fig.update_layout(margin=dict(l=0, r=0, t=30, b=10))
+def plot_map(year, type):
+
+    plot_df = df[(df['year']==year)].dropna()
+
+    fig = px.scatter_mapbox(plot_df, lat="latitude", lon="longitude", color=type, size=type,
+                            color_continuous_scale="agsunset",
+                            center={"lat": 43.6, "lon": -100.246}, zoom=1.7,
+                            mapbox_style="carto-positron", hover_name="video_title")
+    fig.update_layout(margin=dict(l=0, r=0, t=30, b=10))
+
+    return fig
 # fig.show()
+# %%
+year = 2019
+type = 'view_count'
+df = pd.read_csv('data/processed.csv')
+df = df[(df['year']==year)].dropna()
+df
+
+plot_map(year, type)
 # %%
