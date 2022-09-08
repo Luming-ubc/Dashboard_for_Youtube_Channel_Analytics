@@ -180,7 +180,7 @@ app.layout = html.Div(id = 'main_container', children = [
 
             ], 
             style = {
-                'width': '18%', 
+                'width': '19%', 
                 'margin-top': '0px', 
                 'padding': '25px', 
                 'background-color': '#305d73', 
@@ -192,17 +192,71 @@ app.layout = html.Div(id = 'main_container', children = [
 
             # Graph Container Div         
             html.Div(id = 'graphs', children = [
-                
+                html.Div(children=[
 
-                
+
+                    dcc.Graph(
+                        id='hist1', 
+                        style = {'height': '50%'},
+                    ),
+
+                    dcc.Graph(
+                        id='hist2', 
+                        style = {'height': '50%'},
+                    ),
+                    
+
+                    
                 ], 
-                style = {
-                    'width': '75%', 
-                    'overflow': 'hidden', 
-                    'height': '780px', 
-                    'background-color': '#305d73', 
-                    'border-radius': '10px', 
-                    'padding': '1%'})
+                style={
+                    'flex': 3,
+                    'justify-content': 'space-around', 
+                    'border-radius': '10px',
+                    'margin-top': '0px', 
+                    'padding': '2px',
+                }),
+
+
+
+                html.Div(children = [
+                    dcc.Graph(
+                        id='hist3', 
+                        style = {'height': '33%'},
+                    ),
+                    
+                    dcc.Graph(
+                        id='hist4', 
+                        style = {'height': '33%'},
+                    ),
+
+                    dcc.Graph(
+                        id='hist5', 
+                        style = {'height': '33%'},
+                    ),
+                ],
+                style={
+                    'flex': 2,
+                    'justify-content': 'space-around', 
+                    'border-radius': '10px',
+                    'margin-top': '0px', 
+                    'padding': '2px',
+                }),
+
+
+
+
+
+            ], 
+            style = {
+                'width': '74%', 
+                'overflow': 'hidden', 
+                'height': '780px', 
+                'background-color': '#305d73', 
+                'border-radius': '10px', 
+                'padding': '1%',
+                'display': 'flex', 
+                'flex-direction': 'row'
+            })
 
 
         ], 
