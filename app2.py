@@ -245,9 +245,12 @@ app.layout = html.Div(id = 'main_container', children = [
                             },
                     ),
                     
-                    dcc.Graph(
+                    html.Iframe(
                         id='location_or_not', 
-                        style = {'height': '33%'},
+                        style = {
+                            'height': '200px',
+                            'width': '545px'
+                            },
                     ),
 
                     dcc.Graph(
@@ -418,6 +421,63 @@ def plot_ranking(year, types):
     )
     return [plot.to_html()]
 
+
+
+@app.callback(
+    [
+        Output(component_id='location_or_not', component_property='srcDoc')
+     ],
+    [
+        Input(component_id='year_dropdown', component_property='value'),
+        Input(component_id='type_selection', component_property='value'),
+    ]
+)
+def plot_violin(year, types):
+    if types == 'views':
+        types = 'view_count'
+
+    if types == 'likes':
+        types = 'like_count'
+    
+    if types == 'comments':
+        types = 'comment_count'
+
+    plot_df = df[df['year']==year]
+
+    plot = alt.Chart(plot_df).transform_density(
+        types,
+        as_=[types, 'density'],
+        extent=[5, 300000],
+        groupby=['location_or_not']
+    ).mark_area(orient='horizontal').encode(
+        y=types,
+        color='location_or_not:N',
+        x=alt.X(
+            'density:Q',
+            stack='center',
+            impute=None,
+            title=None,
+            axis=alt.Axis(labels=False, values=[0],grid=False, ticks=True),
+        ),
+        column=alt.Column(
+            'location_or_not:N',
+            header=alt.Header(
+                titleOrient='bottom',
+                labelOrient='bottom',
+                labelPadding=0,
+            ),
+        )
+    ).properties(
+        width=160,
+        height=160
+
+    ).configure_facet(
+        spacing=0
+    ).configure_view(
+        stroke=None
+    )
+
+    return [plot.to_html()]
 
 
 
