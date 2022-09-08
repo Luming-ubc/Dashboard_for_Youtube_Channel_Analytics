@@ -124,7 +124,7 @@ app.layout = html.Div(id = 'main_container', children = [
 
                     dcc.Dropdown(
                         options=[
-                            {"label": "2018", "value": 2018},
+                            {"label": "2022", "value": 2022},
                             {"label": "2019", "value": 2019},
                             {"label": "2020", "value": 2020},
                             {"label": "2021", "value": 2021}],
@@ -207,7 +207,10 @@ app.layout = html.Div(id = 'main_container', children = [
                     dcc.Graph(
                         id='world_map', 
                         figure={},
-                        style = {'height': '50%'},
+                        style = {
+                            'height': '50%',
+                            
+                            },
                     ),
 
                     dcc.Graph(
@@ -224,6 +227,7 @@ app.layout = html.Div(id = 'main_container', children = [
                     'border-radius': '10px',
                     'margin-top': '0px', 
                     'padding': '2px',
+                    # 'background-color' : '#6d7778',
                 }),
 
 
@@ -298,6 +302,8 @@ df = pd.read_csv('data/processed.csv')
 )
 def plot_map(year, types):
 
+    label = types
+
     if types == 'views':
         types = 'view_count'
 
@@ -314,10 +320,16 @@ def plot_map(year, types):
     fig = px.scatter_mapbox(plot_df, lat="latitude", lon="longitude", color=types, size=types,
                             color_continuous_scale="agsunset",
                             center={"lat": 44.9, "lon": -93.246}, zoom=2.2,
-                            mapbox_style="carto-positron", hover_name="video_title")
-    # fig.update_layout(margin=dict(l=0, r=0, t=30, b=10))
-    
+                            mapbox_style="carto-darkmatter", hover_name="video_title")
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=0, b=0),
+        legend_title_text= label
+    )
+
     return [go.Figure(data=fig)]
+
+
+
 
 
 if __name__ == '__main__':
