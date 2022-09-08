@@ -1,4 +1,0 @@
-This is a test file with some texts
-Text Line 1
-Text Line 2
-Text Line 3
