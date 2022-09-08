@@ -100,8 +100,6 @@ app.layout = html.Div(id = 'main_container', children = [
 
 
 
-
-
                 html.Br(),
                 # 2. Year slider
                 html.Div([
@@ -116,13 +114,24 @@ app.layout = html.Div(id = 'main_container', children = [
                                 'color': '#b1b9bd',
                             }),
                     html.Br(),
-                    dcc.RangeSlider(
-                        min = 2015, max = 2022,
-                        marks = {i: {'label': f'{i}', 'style': {'color': '#f5f5f5'}} for i in range(2015, 2022, 1)},
-                        id = 'year_range',
-                        value = [2015, 2022],
-                        tooltip={"placement": "right", "always_visible": True}
-                    ),
+                    # dcc.RangeSlider(
+                    #     id = 'year_slider',
+                    #     min = 2015, max = 2022,
+                    #     marks = {i: {'label': f'{i}', 'style': {'color': '#f5f5f5'}} for i in range(2015, 2022, 1)},
+                    #     value = [2015, 2022],
+                    #     tooltip={"placement": "right", "always_visible": True}
+                    # ),
+
+                    dcc.Dropdown(
+                        options=[
+                            {"label": "2018", "value": 2018},
+                            {"label": "2019", "value": 2019},
+                            {"label": "2020", "value": 2020},
+                            {"label": "2021", "value": 2021}],
+                        value = '2019', 
+                        id='year_dropdown'
+                        ),
+
                     html.Div(id='slider-output-container'),
 
                 ],
@@ -151,9 +160,9 @@ app.layout = html.Div(id = 'main_container', children = [
                             }),
                     # which view RadioItems
                     dcc.RadioItems(
+                        id='type_selection',
                         options=['views', 'likes', 'comments'],
                         value='views',
-                        id='season',
                         inline=False,
                     )
                 ], 
@@ -196,12 +205,13 @@ app.layout = html.Div(id = 'main_container', children = [
 
 
                     dcc.Graph(
-                        id='hist1', 
+                        id='world_map', 
+                        figure={},
                         style = {'height': '50%'},
                     ),
 
                     dcc.Graph(
-                        id='hist2', 
+                        id='time_series', 
                         style = {'height': '50%'},
                     ),
                     
@@ -220,17 +230,17 @@ app.layout = html.Div(id = 'main_container', children = [
 
                 html.Div(children = [
                     dcc.Graph(
-                        id='hist3', 
+                        id='ranking', 
                         style = {'height': '33%'},
                     ),
                     
                     dcc.Graph(
-                        id='hist4', 
+                        id='location_or_not', 
                         style = {'height': '33%'},
                     ),
 
                     dcc.Graph(
-                        id='hist5', 
+                        id='duration', 
                         style = {'height': '33%'},
                     ),
                 ],
@@ -272,6 +282,42 @@ style = {
 })
 
 
+
+
+df = pd.read_csv('data/processed.csv')
+
+# Connect the Plotly graphs with Dash Components
+@app.callback(
+    [
+        Output(component_id='world_map', component_property='figure')
+     ],
+    [
+        Input(component_id='year_dropdown', component_property='value'),
+        Input(component_id='type_selection', component_property='value'),
+    ]
+)
+def plot_map(year, types):
+
+    if types == 'views':
+        types = 'view_count'
+
+    if types == 'likes':
+        types = 'like_count'
+    
+    if types == 'comments':
+        types = 'comment_count'
+
+
+    plot_df = df.copy()
+    plot_df = df[(df['year']==year)].dropna()
+
+    fig = px.scatter_mapbox(plot_df, lat="latitude", lon="longitude", color=types, size=types,
+                            color_continuous_scale="agsunset",
+                            center={"lat": 44.9, "lon": -93.246}, zoom=2.2,
+                            mapbox_style="carto-positron", hover_name="video_title")
+    # fig.update_layout(margin=dict(l=0, r=0, t=30, b=10))
+    
+    return [go.Figure(data=fig)]
 
 
 if __name__ == '__main__':
