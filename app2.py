@@ -237,9 +237,12 @@ app.layout = html.Div(id = 'main_container', children = [
 
 
                 html.Div(children = [
-                    dcc.Graph(
+                    html.Iframe(
                         id='ranking', 
-                        style = {'height': '33%'},
+                        style = {
+                            'height': '200px',
+                            'width': '545px'
+                            },
                     ),
                     
                     dcc.Graph(
@@ -380,6 +383,39 @@ def plot_bubble(year, types):
     )
 
 
+    return [plot.to_html()]
+
+
+
+@app.callback(
+    [
+        Output(component_id='ranking', component_property='srcDoc')
+     ],
+    [
+        Input(component_id='year_dropdown', component_property='value'),
+        Input(component_id='type_selection', component_property='value'),
+    ]
+)
+def plot_ranking(year, types):
+
+    if types == 'views':
+        types = 'view_count'
+
+    if types == 'likes':
+        types = 'like_count'
+    
+    if types == 'comments':
+        types = 'comment_count'
+    
+    plot_df = df[df['year']==year].sort_values(by = types).iloc[0:8, ]
+    plot = alt.Chart(plot_df).mark_bar().encode(
+        x= types,
+        y= alt.Y('video_id', sort='-x'),
+        tooltip=['video_title', 'description']
+    ).properties(
+        height = 160,
+        width = 390
+    )
     return [plot.to_html()]
 
 
